@@ -11,7 +11,9 @@ export default function Navbar() {
   return (
     <>
       <div className="navbar">
-        <div className="navbar__logo">YummySPOT</div>
+        <Link href="/" className="navbar__logo">
+          YummySPOT
+        </Link>
         <div className="navbar__list">
           <Link href="/stores" className="navbar__list--item">
             맛집 목록
@@ -19,7 +21,7 @@ export default function Navbar() {
           <Link href="/stores/new" className="navbar__list--item">
             맛집 등록
           </Link>
-          <Link href="user/likes" className="navbar__list--item">
+          <Link href="users/likes" className="navbar__list--item">
             찜한 가게
           </Link>
           <Link href="users/login" className="navbar__list--item">
