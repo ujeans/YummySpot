@@ -6,11 +6,12 @@ import { useRouter } from "next/router";
 import { StoreApiResponse } from "@/interface";
 
 import Loading from "@/components/Loading";
+import Pagination from "@/components/Pagination";
 
 export default function StoreListPage() {
   // 1. 현재 페이지가 어떤 페이지인지 보여주기 위해서는 query params를 사용
   const router = useRouter();
-  const { page = "1" } = router.query; // stores?page=3 페이지가 넘어갈 때마다 page query가 변하게 된다.
+  const { page = "1" }: any = router.query; // stores?page=3 페이지가 넘어갈 때마다 page query가 변하게 된다.
 
   const {
     isLoading,
@@ -22,8 +23,6 @@ export default function StoreListPage() {
     const { data } = await axios(`/api/stores?page=${page}`);
     return data as StoreApiResponse;
   });
-
-  console.log(stores);
 
   if (isError) {
     return (
@@ -76,6 +75,10 @@ export default function StoreListPage() {
           })
         )}
       </ul>
+      {/* 1. pagination 컴포넌트 만들기 */}
+      {stores?.totalPage && (
+        <Pagination total={stores?.totalPage} page={page} />
+      )}
     </div>
   );
 }
