@@ -13,7 +13,7 @@ async function seedData() {
       lng: store?.x_cnts,
       name: store?.upso_nm,
       category: store?.bizcnd_code_nm,
-      storeType: store?.cob_code,
+      storeType: store?.cob_code_nm,
       foodCertifyName: store?.crtfc_gbn_nm,
     };
 
