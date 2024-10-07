@@ -1,19 +1,27 @@
 import Image from "next/image";
 import axios from "axios";
 import { useQuery } from "react-query";
+import { useRouter } from "next/router";
 
-import { StoreType } from "@/interface";
+import { StoreApiResponse } from "@/interface";
 
 import Loading from "@/components/Loading";
+import Pagination from "@/components/Pagination";
 
 export default function StoreListPage() {
+  // 1. 현재 페이지가 어떤 페이지인지 보여주기 위해서는 query params를 사용
+  const router = useRouter();
+  const { page = "1" }: any = router.query; // stores?page=3 페이지가 넘어갈 때마다 page query가 변하게 된다.
+
   const {
     isLoading,
     isError,
     data: stores,
-  } = useQuery("stores", async () => {
-    const { data } = await axios("/api/stores");
-    return data as StoreType[];
+    // 2. 변경된 page query 값을 useQuery에 넘겨준다. 이때 queryKey는 stores가 아니라 page마다 다른 query를 호출하기 때문에 stores에 page값을 넘겨준다.
+  } = useQuery(`stores-${page}`, async () => {
+    // 3. api/stores에서도 queryKey값으로 넘겨준다
+    const { data } = await axios(`/api/stores?page=${page}`);
+    return data as StoreApiResponse;
   });
 
   if (isError) {
@@ -30,7 +38,7 @@ export default function StoreListPage() {
         {isLoading ? (
           <Loading />
         ) : (
-          stores?.map((store, index) => {
+          stores?.data?.map((store, index) => {
             return (
               <li className="flex justify-between gap-6 py-5" key={index}>
                 <div className="flex gap-x-4">
@@ -67,6 +75,10 @@ export default function StoreListPage() {
           })
         )}
       </ul>
+      {/* 1. pagination 컴포넌트 만들기 */}
+      {stores?.totalPage && (
+        <Pagination total={stores?.totalPage} page={page} />
+      )}
     </div>
   );
 }
