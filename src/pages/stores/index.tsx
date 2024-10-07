@@ -4,6 +4,8 @@ import { useQuery } from "react-query";
 
 import { StoreType } from "@/interface";
 
+import Loading from "@/components/Loading";
+
 export default function StoreListPage() {
   const {
     isLoading,
@@ -25,43 +27,45 @@ export default function StoreListPage() {
   return (
     <div className="px-4 md:max-w-4xl mx-auto py-8">
       <ul role="list" className="divide-y divide-gray-100">
-        {isLoading
-          ? "loading UI"
-          : stores?.map((store, index) => {
-              return (
-                <li className="flex justify-between gap-6 py-5" key={index}>
-                  <div className="flex gap-x-4">
-                    <Image
-                      src={
-                        store?.category
-                          ? `/images/markers/${store?.category}.png`
-                          : "/images/markers/default.png"
-                      }
-                      width={48}
-                      height={48}
-                      alt="아이콘 이미지"
-                    />
-                    <div>
-                      <div className="text-sm font-semibold leading-9 text-gray-900">
-                        {store?.name}
-                      </div>
-                      <div className="mt-1 text-xs truncate font-semibold leading-6 text-gray-500">
-                        {store?.storeType}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="hidden sm:flex sm:flex-col sm:items-end">
+        {isLoading ? (
+          <Loading />
+        ) : (
+          stores?.map((store, index) => {
+            return (
+              <li className="flex justify-between gap-6 py-5" key={index}>
+                <div className="flex gap-x-4">
+                  <Image
+                    src={
+                      store?.category
+                        ? `/images/markers/${store?.category}.png`
+                        : "/images/markers/default.png"
+                    }
+                    width={48}
+                    height={48}
+                    alt="아이콘 이미지"
+                  />
+                  <div>
                     <div className="text-sm font-semibold leading-9 text-gray-900">
-                      {store?.address}
+                      {store?.name}
                     </div>
                     <div className="mt-1 text-xs truncate font-semibold leading-6 text-gray-500">
-                      {store?.phone || "번호 없음"} | {store?.foodCertifyName} |{" "}
-                      {store?.category}
+                      {store?.storeType}
                     </div>
                   </div>
-                </li>
-              );
-            })}
+                </div>
+                <div className="hidden sm:flex sm:flex-col sm:items-end">
+                  <div className="text-sm font-semibold leading-9 text-gray-900">
+                    {store?.address}
+                  </div>
+                  <div className="mt-1 text-xs truncate font-semibold leading-6 text-gray-500">
+                    {store?.phone || "번호 없음"} | {store?.foodCertifyName} |{" "}
+                    {store?.category}
+                  </div>
+                </div>
+              </li>
+            );
+          })
+        )}
       </ul>
     </div>
   );
