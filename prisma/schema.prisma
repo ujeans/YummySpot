@@ -18,8 +18,8 @@ datasource db {
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
-  name      String
-    emailVerified DateTime?
+  name      String?
+  emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
