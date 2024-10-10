@@ -4,6 +4,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import GoogleProvider from "next-auth/providers/google";
 import NaverProvider from "next-auth/providers/naver";
+import { signIn } from "next-auth/react";
 
 const prisma = new PrismaClient();
 
@@ -22,6 +23,10 @@ export const authOptions = {
       clientSecret: process.env.NAVER_CLIENT_SECRET || "",
     }),
   ],
+
+  pages: {
+    signIn: "/users/login",
+  },
 };
 
 export default NextAuth(authOptions);
