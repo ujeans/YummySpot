@@ -6,7 +6,7 @@ import { StoreApiResponse, StoreType } from "@/interface";
 export default async function handler(
   req: NextApiRequest,
   // 8. interface 업데이트하기 StoreType[] -> StoreApiResponse
-  res: NextApiResponse<StoreApiResponse | StoreType[]>
+  res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType>
 ) {
   // 4. req.query에서 page값을 가져온다.
   const { page = "" }: { page?: string } = req.query;
@@ -35,9 +35,15 @@ export default async function handler(
       totalPage: Math.ceil(count / 10),
     });
   } else {
+    const { id }: { id?: string } = req.query;
+
     const stores = await prisma.store.findMany({
       orderBy: { id: "asc" },
+      where: {
+        id: id ? parseInt(id) : {},
+      },
     });
-    return res.status(200).json(stores);
+
+    return res.status(200).json(id ? stores[0] : stores);
   }
 }
