@@ -12,17 +12,24 @@ declare global {
 const DEFAULT_LAT = 37.497625203;
 const DEFAULT_LNG = 127.03888379;
 
+const DEFAULT_ZOOM = 3;
 interface MapProps {
   setMap: Dispatch<SetStateAction<any>>;
+  lat?: string | null;
+  lng?: string | null;
+  zoom?: string | null;
 }
 
-export default function Map({ setMap }: MapProps) {
+export default function Map({ setMap, lat, lng, zoom }: MapProps) {
   const loadKakaoMap = () => {
     window.kakao.maps.load(() => {
       const mapContainer = document.getElementById("map"); // 지도를 표시할 div
       const mapOption = {
-        center: new window.kakao.maps.LatLng(DEFAULT_LAT, DEFAULT_LNG), // 지도의 중심 좌표
-        level: 3, // 지도의 확대 레벨
+        center: new window.kakao.maps.LatLng(
+          lat ?? DEFAULT_LAT,
+          lng ?? DEFAULT_LNG
+        ), // 지도의 중심 좌표
+        level: zoom ?? DEFAULT_ZOOM, // 지도의 확대 레벨
       };
       const map = new window.kakao.maps.Map(mapContainer, mapOption); // 지도를 생성
 
